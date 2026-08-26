@@ -2418,9 +2418,9 @@ public class CodeInsightTestFixtureImpl extends BaseFixture implements CodeInsig
   private SearchEverywhereContributor<Object> createMockClassSearchEverywhereContributor(boolean everywhere) {
     DataContext dataContext = SimpleDataContext.getProjectContext(getProject());
     AnActionEvent event = AnActionEvent.createFromDataContext(ActionPlaces.UNKNOWN, null, dataContext);
-    ClassSearchEverywhereContributor contributor = new ClassSearchEverywhereContributor(event) {{
+    ClassSearchEverywhereContributor contributor = ReadAction.computeBlocking(() -> new ClassSearchEverywhereContributor(event) {{
       myScopeDescriptor = new ScopeDescriptor(FindSymbolParameters.searchScopeFor(myProject, everywhere));
-    }};
+    }});
     Disposer.register(getProjectDisposable(), contributor);
     return contributor;
   }
